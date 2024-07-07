@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Win Percentage Calculator</title>
+</head>
+<body>
+    <h1>Win Percentage Calculator</h1>
+    <form id="calculator-form">
+        <label for="win-percentage">What is your win percentage (%):</label><br>
+        <input type="number" id="win-percentage" name="win-percentage" step="0.01" required><br><br>
+        
+        <label for="risk-lose">What is your acceptable losing day:</label><br>
+        <input type="number" id="risk-lose" name="risk-lose" step="0.01" required><br><br>
+        
+        <label for="risk-win">What is your acceptable winning day:</label><br>
+        <input type="number" id="risk-win" name="risk-win" step="0.01" required><br><br>
+        
+        <label for="equity">What is the equity you want in your account:</label><br>
+        <input type="number" id="equity" name="equity" step="0.01" required><br><br>
+        
+        <input type="submit" value="Calculate">
+    </form>
+    
+    <div id="results">
+        <h2>Results</h2>
+        <p id="win-percentage-result"></p>
+        <p id="rrr-result"></p>
+        <p id="days-result"></p>
+    </div>
+
+    <script>
+        function winPercentageToDecimal(win) {
+            return win / 100;
+        }
+
+        document.getElementById('calculator-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let winPercentage = parseFloat(document.getElementById('win-percentage').value);
+            let riskLose = parseFloat(document.getElementById('risk-lose').value);
+            let riskWin = parseFloat(document.getElementById('risk-win').value);
+            let equity = parseFloat(document.getElementById('equity').value);
+            
+            winPercentage = winPercentageToDecimal(winPercentage);
+            let lossPercentage = 1 - winPercentage;
+            
+            document.getElementById('win-percentage-result').innerText = "Your win percentage is " + winPercentage.toFixed(2);
+            
+            let rrr = riskWin / riskLose;
+            document.getElementById('rrr-result').innerText = "Your RRR is: " + rrr.toFixed(2) + " :)";
+            
+            let nbrDays = equity / (riskWin * winPercentage - riskLose * lossPercentage);
+            nbrDays = Math.ceil(nbrDays);
+            document.getElementById('days-result').innerText = "You will need " + nbrDays + " days to achieve that.";
+        });
+    </script>
+</body>
+</html>
